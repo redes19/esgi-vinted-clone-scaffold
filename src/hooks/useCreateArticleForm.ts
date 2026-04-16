@@ -1,10 +1,10 @@
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import type {Article}  from "../types/article"
 import { api } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
 
 
-interface CreateArticleProps {
+export interface CreateArticleProps {
     title: string;
     description: string;
     price: number;
@@ -15,23 +15,42 @@ interface CreateArticleProps {
 }
 
 
-export const useCreateArticleForm = (article: CreateArticleProps) => {
-    const { register, handleSubmit, control } = useForm({
-        title: article.title,
-        description: article.description,
-        price: article.price,
-        category: article.category,
-        size: article.size,
-        condition: article.condition,
-        imageUrl: article.imageUrl
-    });
+export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
+    const {
+        register,
+        handleSubmit ,
+        formState: { errors }, 
+        } 
+        = useForm({
+            defaultValues: {
+                title: initialValues?.title ?? "",
+                description: initialValues?.description ?? "",
+                price: initialValues?.price ?? 0,
+                category: initialValues?.category ?? "",
+                size: initialValues?.size ?? "",
+                condition: initialValues?.condition ?? "",
+                imageUrl: initialValues?.imageUrl ?? ""
+            }});
+
+    const onError: SubmitErrorHandler<CreateArticleProps> = (errors) => console.log(errors);
 
 
-    const { data , isLoading , isError} = useMutation<CreateArticleProps>(
+    const { mutate,
+            isError,
+            isSuccess,
+            isPending
+            } = useMutation<CreateArticleProps>(
         {
-            mutationFn: (articleId: string) => api.post("/api/article/"+articleId,{id: articleId ,body:article}),
-            onSuccess: () => {}
+            mutationFn: (data) => api.post("/api/articles",{body:data}),
+            onSuccess: () => {},
+            onError: (errors) => onError(errors),
         }
     )
-    return {article: data, isLoading, isError};
+
+    const onSubmit: SubmitHandler<CreateArticleProps> = (data) => mutate(data);
+    
+
+    return {register,isError,isSuccess,isPending,handleSubmit,errors,onSubmit};
 }
+
+
