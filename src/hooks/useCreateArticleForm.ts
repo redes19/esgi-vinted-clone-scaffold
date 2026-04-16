@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form"
 import type {Article}  from "../types/article"
 import { api } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 
 export interface CreateArticleProps {
@@ -16,6 +17,8 @@ export interface CreateArticleProps {
 
 
 export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit ,
@@ -41,8 +44,11 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
             isPending
             } = useMutation<CreateArticleProps>(
         {
-            mutationFn: (data) => api.post("/api/articles",{body:data}),
-            onSuccess: () => {},
+            mutationFn: (data) => api.post("/api/articles",data),
+            onSuccess: (response) => {
+                const id = response.id; 
+                navigate(`/articles/${id}`);
+            },
             onError: (errors) => onError(errors),
         }
     )
