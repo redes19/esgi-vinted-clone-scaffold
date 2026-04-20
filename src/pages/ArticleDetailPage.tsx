@@ -1,5 +1,5 @@
 import { useArticleDetail } from "../hooks/useArticleDetail";
-import { useParams } from 'react-router-dom'
+import { useParams } from "react-router-dom";
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -15,7 +15,6 @@ export default function ArticleDetailPage() {
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
         <div>
           <img
             src={article.imageUrl}
@@ -24,7 +23,6 @@ export default function ArticleDetailPage() {
           />
         </div>
 
-       
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl font-semibold text-gray-900">
             {article.title}
@@ -32,9 +30,7 @@ export default function ArticleDetailPage() {
 
           <p className="text-gray-700">{article.description}</p>
 
-          <p className="text-xl font-bold text-teal-600">
-            {article.price} €
-          </p>
+          <p className="text-xl font-bold text-teal-600">{article.price} €</p>
 
           <div className="text-sm text-gray-600 space-y-1">
             <p>
@@ -42,12 +38,10 @@ export default function ArticleDetailPage() {
               {article.category}
             </p>
             <p>
-              <span className="font-semibold">Taille :</span>{" "}
-              {article.size}
+              <span className="font-semibold">Taille :</span> {article.size}
             </p>
             <p>
-              <span className="font-semibold">État :</span>{" "}
-              {article.condition}
+              <span className="font-semibold">État :</span> {article.condition}
             </p>
             <p>
               <span className="font-semibold">Posté par :</span>{" "}
@@ -59,4 +53,3 @@ export default function ArticleDetailPage() {
     </div>
   );
 }
-

@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from "react-router-dom";
-import  CreateArticleForm  from "./components/CreateArticleForm";
 
 export default function App() {
   return (
@@ -47,13 +46,10 @@ export default function App() {
             </NavLink>
           </nav>
         </div>
-       
-
       </header>
       <main className="max-w-4xl mx-auto p-6">
         <Outlet />
       </main>
-      
     </div>
   );
 }

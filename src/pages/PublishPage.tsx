@@ -4,7 +4,6 @@ export default function PublishPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-lg mx-auto">
-        
         <h1 className="text-2xl font-bold mb-6 text-gray-900">
           Publier une annonce
         </h1>
@@ -18,10 +17,7 @@ export default function PublishPage() {
           condition=""
           imageUrl=""
         />
-
       </div>
     </div>
-
   );
-
 }

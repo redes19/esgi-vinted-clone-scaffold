@@ -4,7 +4,6 @@ const userName = import.meta.env.VITE_USER_NAME || "Utilisateur anonyme";
 
 const BASE_URL = "http://localhost:3000";
 
-
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

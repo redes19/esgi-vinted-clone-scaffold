@@ -6,6 +6,6 @@ export function useArticleDetail(id: string) {
   return useQuery({
     queryKey: ["article", id],
     queryFn: () => api.get<Article>(`/api/articles/${id}`),
-    enabled: !!id, 
+    enabled: !!id,
   });
 }
