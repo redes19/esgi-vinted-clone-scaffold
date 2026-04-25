@@ -5,6 +5,8 @@ import Button from "./Button";
 interface ArticleCardProps {
   data: Article[];
   onDelete?: (id: string) => void;
+  favoriteIds?: Set<string>;
+  onToggleFavorite?: (articleId: string, isFavorited: boolean) => void;
 }
 
 const CONDITION_BADGE_CLASS: Record<string, string> = {
@@ -15,78 +17,103 @@ const CONDITION_BADGE_CLASS: Record<string, string> = {
   satisfaisant: "bg-red-50 text-red-700",
 };
 
-const CarteArticles = ({ data, onDelete }: ArticleCardProps) => {
+const CarteArticles = ({
+  data,
+  onDelete,
+  favoriteIds,
+  onToggleFavorite,
+}: ArticleCardProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {data &&
-        data.map((article) => (
-          <div
-            key={article.id}
-            className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:-translate-y-1 transition-transform duration-150 flex flex-col"
-          >
-            <Link
-              to={`/articles/${article.id}`}
-              className="flex flex-col flex-1"
+        data.map((article) => {
+          const isFavorited = favoriteIds?.has(article.id) ?? false;
+          return (
+            <div
+              key={article.id}
+              className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:-translate-y-1 transition-transform duration-150 flex flex-col"
             >
-              {article.imageUrl ? (
-                <img
-                  src={article.imageUrl}
-                  alt={article.title}
-                  className="w-full aspect-[3/4] object-cover"
-                />
-              ) : (
-                <div className="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center">
-                  <span className="text-gray-300 text-4xl">📷</span>
+              <Link
+                to={`/articles/${article.id}`}
+                className="flex flex-col flex-1"
+              >
+                {article.imageUrl ? (
+                  <img
+                    src={article.imageUrl}
+                    alt={article.title}
+                    className="w-full aspect-[3/4] object-cover"
+                  />
+                ) : (
+                  <div className="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center">
+                    <span className="text-gray-300 text-4xl">📷</span>
+                  </div>
+                )}
+
+                <div className="p-3 flex flex-col flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                      {CATEGORIES.find((c) => c.id === article.category)
+                        ?.label ?? article.category}
+                    </span>
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        CONDITION_BADGE_CLASS[article.condition] ??
+                        "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {CONDITIONS.find((c) => c.value === article.condition)
+                        ?.label ?? article.condition}
+                    </span>
+                  </div>
+
+                  <p className="font-medium text-gray-900 text-sm truncate mb-1">
+                    {article.title}
+                  </p>
+
+                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed flex-grow">
+                    {article.description}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-2 mt-3 border-t border-gray-100">
+                    <span className="text-base font-semibold text-gray-900">
+                      {article.price} €
+                    </span>
+                    <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+                      {article.size}
+                    </span>
+                  </div>
                 </div>
+              </Link>
+
+              {onToggleFavorite && (
+                <button
+                  type="button"
+                  aria-label={
+                    isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"
+                  }
+                  onClick={() => onToggleFavorite(article.id, isFavorited)}
+                  className="absolute top-2 left-2 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow-sm flex items-center justify-center text-lg hover:bg-white transition-colors"
+                >
+                  <span
+                    className={isFavorited ? "text-red-500" : "text-gray-400"}
+                  >
+                    {isFavorited ? "♥" : "♡"}
+                  </span>
+                </button>
               )}
 
-              <div className="p-3 flex flex-col flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
-                    {CATEGORIES.find((c) => c.id === article.category)?.label ??
-                      article.category}
-                  </span>
-                  <span
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      CONDITION_BADGE_CLASS[article.condition] ??
-                      "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {CONDITIONS.find((c) => c.value === article.condition)
-                      ?.label ?? article.condition}
-                  </span>
+              {onDelete && (
+                <div className="absolute top-2 right-2 z-10">
+                  <Button
+                    text="🗑"
+                    onClick={() => onDelete(article.id)}
+                    variant="danger"
+                  />
                 </div>
-
-                <p className="font-medium text-gray-900 text-sm truncate mb-1">
-                  {article.title}
-                </p>
-
-                <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed flex-grow">
-                  {article.description}
-                </p>
-
-                <div className="flex items-center justify-between pt-2 mt-3 border-t border-gray-100">
-                  <span className="text-base font-semibold text-gray-900">
-                    {article.price} €
-                  </span>
-                  <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
-                    {article.size}
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-            {onDelete && (
-              <div className="absolute top-2 right-2 z-10">
-                <Button
-                  text="🗑"
-                  onClick={() => onDelete(article.id)}
-                  variant="danger"
-                />
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 };
