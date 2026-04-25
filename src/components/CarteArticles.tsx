@@ -7,6 +7,14 @@ interface ArticleCardProps {
   onDelete?: (id: string) => void;
 }
 
+const CONDITION_BADGE_CLASS: Record<string, string> = {
+  neuf_avec_etiquette: "bg-green-50 text-green-700",
+  neuf_sans_etiquette: "bg-green-50 text-green-700",
+  tres_bon_etat: "bg-amber-50 text-amber-700",
+  bon_etat: "bg-amber-50 text-amber-700",
+  satisfaisant: "bg-red-50 text-red-700",
+};
+
 const CarteArticles = ({ data, onDelete }: ArticleCardProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -40,11 +48,8 @@ const CarteArticles = ({ data, onDelete }: ArticleCardProps) => {
                   </span>
                   <span
                     className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      article.condition.toLowerCase().includes("neuf")
-                        ? "bg-green-50 text-green-700"
-                        : article.condition.toLowerCase().includes("bon")
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-red-50 text-red-700"
+                      CONDITION_BADGE_CLASS[article.condition] ??
+                      "bg-gray-100 text-gray-700"
                     }`}
                   >
                     {CONDITIONS.find((c) => c.value === article.condition)
