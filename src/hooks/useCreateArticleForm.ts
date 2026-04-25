@@ -63,8 +63,6 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     mutationFn: (data) => api.post<Article>("/api/articles", data),
     onSuccess: (response) => {
       localStorage.removeItem(DRAFT_KEY);
-      reset();
-
       navigate(`/articles/${response.id}`);
     },
   });
