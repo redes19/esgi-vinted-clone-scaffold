@@ -60,7 +60,11 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     Error,
     CreateArticleProps
   >({
-    mutationFn: (data) => api.post<Article>("/api/articles", data),
+    mutationFn: (data) =>
+      api.post<Article>(
+        "/api/articles",
+        data as unknown as Record<string, unknown>,
+      ),
     onSuccess: (response) => {
       localStorage.removeItem(DRAFT_KEY);
       navigate(`/articles/${response.id}`);
