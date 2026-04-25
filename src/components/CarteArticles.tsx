@@ -1,4 +1,4 @@
-import { type Article } from "../types/article";
+import { type Article, CATEGORIES, CONDITIONS } from "../types/article";
 import Button from "./Button";
 
 interface ArticleCardProps {
@@ -41,7 +41,8 @@ const CarteArticles = ({ data, onDelete }: ArticleCardProps) => {
             <div className="p-3 flex flex-col flex-1">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
-                  {article.category}
+                  {CATEGORIES.find((c) => c.id === article.category)?.label ??
+                    article.category}
                 </span>
                 <span
                   className={`text-xs font-medium px-2 py-0.5 rounded-full ${
@@ -52,7 +53,8 @@ const CarteArticles = ({ data, onDelete }: ArticleCardProps) => {
                         : "bg-red-50 text-red-700"
                   }`}
                 >
-                  {article.condition}
+                  {CONDITIONS.find((c) => c.value === article.condition)
+                    ?.label ?? article.condition}
                 </span>
               </div>
 

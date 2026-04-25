@@ -1,6 +1,6 @@
 import { useCreateArticleForm } from "../hooks/useCreateArticleForm";
 import type { CreateArticleProps } from "../hooks/useCreateArticleForm";
-import { VALID_CATEGORIES, VALID_CONDITIONS } from "../../server/src/types";
+import { CATEGORIES, CONDITIONS } from "../types/article";
 
 const CreateArticleForm = (props: CreateArticleProps) => {
   const { register, handleSubmit, onSubmit, isPending, errors } =
@@ -75,9 +75,12 @@ const CreateArticleForm = (props: CreateArticleProps) => {
           })}
           className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
         >
-          {VALID_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
+          <option value="" disabled>
+            Sélectionner une catégorie
+          </option>
+          {CATEGORIES.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.label}
             </option>
           ))}
         </select>
@@ -106,9 +109,12 @@ const CreateArticleForm = (props: CreateArticleProps) => {
           })}
           className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
         >
-          {VALID_CONDITIONS.map((cond) => (
-            <option key={cond} value={cond}>
-              {cond}
+          <option value="" disabled>
+            Sélectionner un état
+          </option>
+          {CONDITIONS.map((cond) => (
+            <option key={cond.value} value={cond.value}>
+              {cond.label}
             </option>
           ))}
         </select>
