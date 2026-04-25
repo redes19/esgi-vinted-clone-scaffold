@@ -2,9 +2,13 @@ import { useCreateArticleForm } from "../hooks/useCreateArticleForm";
 import type { CreateArticleProps } from "../hooks/useCreateArticleForm";
 import { CATEGORIES, CONDITIONS } from "../types/article";
 
-const CreateArticleForm = (props: CreateArticleProps) => {
+interface CreateArticleFormProps {
+  initialValues?: CreateArticleProps;
+}
+
+const CreateArticleForm = ({ initialValues }: CreateArticleFormProps = {}) => {
   const { register, handleSubmit, onSubmit, isPending, isError, error, errors } =
-    useCreateArticleForm(props);
+    useCreateArticleForm(initialValues);
 
   return (
     <form

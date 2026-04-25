@@ -8,15 +8,7 @@ export default function PublishPage() {
           Publier une annonce
         </h1>
 
-        <CreateArticleForm
-          title=""
-          description=""
-          price={0}
-          category=""
-          size=""
-          condition=""
-          imageUrl=""
-        />
+        <CreateArticleForm />
       </div>
     </div>
   );
