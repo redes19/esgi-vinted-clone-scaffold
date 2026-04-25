@@ -73,9 +73,7 @@ const CreateArticleForm = (props: CreateArticleProps) => {
           {...register("category", {
             required: "La catégorie est obligatoire",
           })}
-          placeholder="Catégorie"
           className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          onChange={onchange}
         >
           {VALID_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
@@ -106,9 +104,7 @@ const CreateArticleForm = (props: CreateArticleProps) => {
           {...register("condition", {
             required: "La condition est obligatoire",
           })}
-          placeholder="État"
           className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          onChange={onchange}
         >
           {VALID_CONDITIONS.map((cond) => (
             <option key={cond} value={cond}>
