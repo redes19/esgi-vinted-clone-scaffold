@@ -12,8 +12,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-md space-y-5"
     >
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Titre</label>
+        <label
+          htmlFor="article-title"
+          className="text-sm font-medium text-gray-700"
+        >
+          Titre
+        </label>
         <input
+          id="article-title"
           {...register("title", {
             required: "Le titre est obligatoire",
             minLength: { value: 3, message: "Minimum 3 caractères" },
@@ -28,8 +34,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Description</label>
+        <label
+          htmlFor="article-description"
+          className="text-sm font-medium text-gray-700"
+        >
+          Description
+        </label>
         <textarea
+          id="article-description"
           {...register("description", {
             required: "La description est obligatoire",
             minLength: {
@@ -50,8 +62,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Prix (€)</label>
+        <label
+          htmlFor="article-price"
+          className="text-sm font-medium text-gray-700"
+        >
+          Prix (€)
+        </label>
         <input
+          id="article-price"
           type="number"
           step="0.01"
           {...register("price", {
@@ -68,8 +86,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Catégorie</label>
+        <label
+          htmlFor="article-category"
+          className="text-sm font-medium text-gray-700"
+        >
+          Catégorie
+        </label>
         <select
+          id="article-category"
           {...register("category", {
             required: "La catégorie est obligatoire",
           })}
@@ -90,8 +114,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Taille</label>
+        <label
+          htmlFor="article-size"
+          className="text-sm font-medium text-gray-700"
+        >
+          Taille
+        </label>
         <input
+          id="article-size"
           {...register("size", { required: "La taille est obligatoire" })}
           placeholder="Taille"
           className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -102,8 +132,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">État</label>
+        <label
+          htmlFor="article-condition"
+          className="text-sm font-medium text-gray-700"
+        >
+          État
+        </label>
         <select
+          id="article-condition"
           {...register("condition", {
             required: "La condition est obligatoire",
           })}
@@ -124,8 +160,14 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       </div>
 
       <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-gray-700">Image URL</label>
+        <label
+          htmlFor="article-imageUrl"
+          className="text-sm font-medium text-gray-700"
+        >
+          Image URL
+        </label>
         <input
+          id="article-imageUrl"
           {...register("imageUrl", {
             required: "L'URL de l'image est obligatoire",
           })}
