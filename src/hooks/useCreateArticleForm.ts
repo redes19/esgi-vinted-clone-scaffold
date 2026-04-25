@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  type SubmitErrorHandler,
+  type SubmitHandler,
+} from "react-hook-form";
 import { api } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
