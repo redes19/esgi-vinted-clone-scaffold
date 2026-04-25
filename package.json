@@ -12,6 +12,7 @@
     "build": "tsc -b && vite build",
     "test": "vitest run",
     "lint": "oxlint src/",
+    "typecheck": "tsc -b --noEmit",
     "format": "prettier --write src/",
     "postinstall": "cd server && pnpm install"
   },
