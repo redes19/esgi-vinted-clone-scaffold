@@ -3,7 +3,7 @@ import type { CreateArticleProps } from "../hooks/useCreateArticleForm";
 import { CATEGORIES, CONDITIONS } from "../types/article";
 
 const CreateArticleForm = (props: CreateArticleProps) => {
-  const { register, handleSubmit, onSubmit, isPending, errors } =
+  const { register, handleSubmit, onSubmit, isPending, isError, error, errors } =
     useCreateArticleForm(props);
 
   return (
@@ -144,6 +144,15 @@ const CreateArticleForm = (props: CreateArticleProps) => {
       >
         {isPending ? "Envoi..." : "Créer l'article"}
       </button>
+
+      {isError && (
+        <p
+          role="alert"
+          className="text-red-600 text-sm text-center"
+        >
+          {error?.message ?? "Une erreur est survenue lors de la création"}
+        </p>
+      )}
     </form>
   );
 };

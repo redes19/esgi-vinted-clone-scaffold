@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import {
-  useForm,
-  type SubmitErrorHandler,
-  type SubmitHandler,
-} from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -59,10 +55,7 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const onError: SubmitErrorHandler<CreateArticleProps> = (errors) =>
-    console.log(errors);
-
-  const { mutate, isError, isSuccess, isPending } = useMutation<
+  const { mutate, isError, isSuccess, isPending, error } = useMutation<
     Article,
     Error,
     CreateArticleProps
@@ -74,7 +67,6 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
 
       navigate(`/articles/${response.id}`);
     },
-    onError: (errors) => onError(errors),
   });
 
   const onSubmit: SubmitHandler<CreateArticleProps> = (data) => mutate(data);
@@ -84,6 +76,7 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     isError,
     isSuccess,
     isPending,
+    error,
     handleSubmit,
     errors,
     onSubmit,
