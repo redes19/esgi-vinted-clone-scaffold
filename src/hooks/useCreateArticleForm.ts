@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import type { Article } from "../types/article";
 
 export interface CreateArticleProps {
   title: string;
@@ -54,21 +55,21 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const onError: SubmitErrorHandler<CreateArticleProps> = (errors) =>
-    console.log(errors);
-
-  const { mutate, isError, isSuccess, isPending } =
-    useMutation<CreateArticleProps>({
-      mutationFn: (data) => api.post("/api/articles", data),
-      onSuccess: (response) => {
-        localStorage.removeItem(DRAFT_KEY);
-        reset();
-
-        const id = response.id;
-        navigate(`/articles/${id}`);
-      },
-      onError: (errors) => onError(errors),
-    });
+  const { mutate, isError, isSuccess, isPending, error } = useMutation<
+    Article,
+    Error,
+    CreateArticleProps
+  >({
+    mutationFn: (data) =>
+      api.post<Article>(
+        "/api/articles",
+        data as unknown as Record<string, unknown>,
+      ),
+    onSuccess: (response) => {
+      localStorage.removeItem(DRAFT_KEY);
+      navigate(`/articles/${response.id}`);
+    },
+  });
 
   const onSubmit: SubmitHandler<CreateArticleProps> = (data) => mutate(data);
 
@@ -77,6 +78,7 @@ export const useCreateArticleForm = (initialValues?: CreateArticleProps) => {
     isError,
     isSuccess,
     isPending,
+    error,
     handleSubmit,
     errors,
     onSubmit,

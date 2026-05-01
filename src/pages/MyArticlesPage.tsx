@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCurrentUserId } from "../hooks/useCurrentUserId";
 import { api } from "../services/api";
 import { type Article } from "../types/article";
@@ -17,7 +18,7 @@ export default function MyArticlesPage() {
 
   const deleteArticleMutation = useMutation({
     mutationFn: async (articleId: string) => {
-      await api.delete<Article[]>("api/articles/" + articleId);
+      await api.delete<Article[]>("/api/articles/" + articleId);
     },
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["article"] });
@@ -25,11 +26,9 @@ export default function MyArticlesPage() {
   });
 
   const handleDeleteArticle = (id: string) => {
-    console.log("id article : ", id);
+    if (!window.confirm("Supprimer cette annonce ?")) return;
     deleteArticleMutation.mutate(id);
   };
-
-  console.log("id : ", idUser);
 
   if (!idUser) return null;
 
@@ -39,12 +38,20 @@ export default function MyArticlesPage() {
 
       {error && <div>Une erreur est survenue</div>}
 
-      {isLoading && <div>Loadind...</div>}
+      {isLoading && <p>Chargement…</p>}
 
-      <CarteArticles
-        data={data || []}
-        onDelete={(id) => handleDeleteArticle(id)}
-      ></CarteArticles>
+      {data && data.length === 0 && (
+        <p>
+          Vous n'avez pas encore publié d'annonce.{" "}
+          <Link to="/publish" className="text-teal-700 hover:underline">
+            Publier une annonce
+          </Link>
+        </p>
+      )}
+
+      {data && data.length > 0 && (
+        <CarteArticles data={data} onDelete={handleDeleteArticle} />
+      )}
     </>
   );
 }

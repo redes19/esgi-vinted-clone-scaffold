@@ -2,8 +2,6 @@ import { getUserId } from "../lib/userId";
 
 const userName = import.meta.env.VITE_USER_NAME || "Utilisateur anonyme";
 
-const BASE_URL = "http://localhost:3000";
-
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -11,7 +9,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     ...(options.headers as Record<string, string>),
   };
 
-  const response = await fetch(BASE_URL + path, { ...options, headers });
+  const response = await fetch(path, { ...options, headers });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

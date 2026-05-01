@@ -1,5 +1,11 @@
+import { Link, useParams } from "react-router-dom";
 import { useArticleDetail } from "../hooks/useArticleDetail";
-import { useParams } from "react-router-dom";
+import { CATEGORIES, CONDITIONS } from "../types/article";
+
+const priceFormatter = new Intl.NumberFormat("fr-FR", {
+  style: "currency",
+  currency: "EUR",
+});
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -7,9 +13,25 @@ export default function ArticleDetailPage() {
 
   if (isLoading) return <p>Chargement...</p>;
   if (isError) return <p>Erreur lors du chargement</p>;
+  if (!article) return <p>Article introuvable</p>;
+
+  const categoryLabel =
+    CATEGORIES.find((c) => c.id === article.category)?.label ??
+    article.category;
+  const conditionLabel =
+    CONDITIONS.find((c) => c.value === article.condition)?.label ??
+    article.condition;
+  const formattedDate = new Date(article.createdAt).toLocaleDateString("fr-FR");
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+      <Link
+        to="/"
+        className="inline-block mb-4 text-sm text-teal-700 hover:underline"
+      >
+        ← Retour au catalogue
+      </Link>
+
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
         Détail de l’article
       </h1>
@@ -30,22 +52,26 @@ export default function ArticleDetailPage() {
 
           <p className="text-gray-700">{article.description}</p>
 
-          <p className="text-xl font-bold text-teal-600">{article.price} €</p>
+          <p className="text-xl font-bold text-teal-600">
+            {priceFormatter.format(article.price)}
+          </p>
 
           <div className="text-sm text-gray-600 space-y-1">
             <p>
-              <span className="font-semibold">Catégorie :</span>{" "}
-              {article.category}
+              <span className="font-semibold">Catégorie :</span> {categoryLabel}
             </p>
             <p>
               <span className="font-semibold">Taille :</span> {article.size}
             </p>
             <p>
-              <span className="font-semibold">État :</span> {article.condition}
+              <span className="font-semibold">État :</span> {conditionLabel}
             </p>
             <p>
               <span className="font-semibold">Posté par :</span>{" "}
               {article.userName}
+            </p>
+            <p>
+              <span className="font-semibold">Publié le :</span> {formattedDate}
             </p>
           </div>
         </div>
