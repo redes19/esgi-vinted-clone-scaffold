@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CarteArticles from "../components/CarteArticles";
 import {
   type CatalogueSort,
   useCatalogueArticles,
 } from "../hooks/useCatalogueArticles";
+import { useFavorites, useToggleFavorite } from "../hooks/useFavorites";
 import { CATEGORIES, CONDITIONS } from "../types/article";
 
 const SORT_OPTIONS: { value: CatalogueSort; label: string }[] = [
@@ -38,6 +39,13 @@ export default function CataloguePage() {
     priceMax,
     sort,
   });
+
+  const { data: favorites } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
+  const favoriteIds = useMemo(
+    () => new Set(favorites?.map((a) => a.id) ?? []),
+    [favorites],
+  );
 
   const hasFilters =
     !!search || !!category || !!condition || !!priceMin || !!priceMax;
@@ -202,7 +210,15 @@ export default function CataloguePage() {
         </p>
       )}
 
-      {data && data.length > 0 && <CarteArticles data={data} />}
+      {data && data.length > 0 && (
+        <CarteArticles
+          data={data}
+          favoriteIds={favoriteIds}
+          onToggleFavorite={(articleId, isFavorited) =>
+            toggleFavorite.mutate({ articleId, isFavorited })
+          }
+        />
+      )}
     </>
   );
 }

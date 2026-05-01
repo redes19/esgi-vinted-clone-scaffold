@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useArticleDetail } from "../hooks/useArticleDetail";
+import { useCurrentUserId } from "../hooks/useCurrentUserId";
+import { useFavorites, useToggleFavorite } from "../hooks/useFavorites";
 import { CATEGORIES, CONDITIONS } from "../types/article";
 
 const priceFormatter = new Intl.NumberFormat("fr-FR", {
@@ -10,6 +12,9 @@ const priceFormatter = new Intl.NumberFormat("fr-FR", {
 export default function ArticleDetailPage() {
   const { id } = useParams();
   const { data: article, isLoading, isError } = useArticleDetail(id!);
+  const currentUserId = useCurrentUserId();
+  const { data: favorites } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
 
   if (isLoading) return <p>Chargement...</p>;
   if (isError) return <p>Erreur lors du chargement</p>;
@@ -22,6 +27,9 @@ export default function ArticleDetailPage() {
     CONDITIONS.find((c) => c.value === article.condition)?.label ??
     article.condition;
   const formattedDate = new Date(article.createdAt).toLocaleDateString("fr-FR");
+
+  const isOwnArticle = article.userId === currentUserId;
+  const isFavorited = !!favorites?.some((a) => a.id === article.id);
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
@@ -55,6 +63,31 @@ export default function ArticleDetailPage() {
           <p className="text-xl font-bold text-teal-600">
             {priceFormatter.format(article.price)}
           </p>
+
+          {!isOwnArticle && (
+            <button
+              type="button"
+              onClick={() =>
+                toggleFavorite.mutate({ articleId: article.id, isFavorited })
+              }
+              disabled={toggleFavorite.isPending}
+              aria-label={
+                isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"
+              }
+              className={`inline-flex items-center gap-2 w-fit px-4 py-2 rounded-xl border text-sm font-medium transition-colors disabled:opacity-50 ${
+                isFavorited
+                  ? "border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
+                  : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <span
+                className={isFavorited ? "text-red-500" : "text-gray-400"}
+              >
+                {isFavorited ? "♥" : "♡"}
+              </span>
+              {isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
+            </button>
+          )}
 
           <div className="text-sm text-gray-600 space-y-1">
             <p>
