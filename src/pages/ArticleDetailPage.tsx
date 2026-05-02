@@ -33,12 +33,18 @@ export default function ArticleDetailPage() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
-      <Link
-        to="/"
-        className="inline-block mb-4 text-sm text-teal-700 hover:underline"
-      >
-        ← Retour au catalogue
-      </Link>
+      <div className="w-full flex justify-between items-center mb-4">
+        <Link to="/" className="text-sm text-teal-700 hover:underline">
+          ← Retour au catalogue
+        </Link>
+
+        <Link
+          to={`/articles/${id}/edit`}
+          className="text-sm text-teal-700 hover:underline"
+        >
+          Modifier l'article
+        </Link>
+      </div>
 
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
         Détail de l’article
@@ -80,9 +86,7 @@ export default function ArticleDetailPage() {
                   : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
-              <span
-                className={isFavorited ? "text-red-500" : "text-gray-400"}
-              >
+              <span className={isFavorited ? "text-red-500" : "text-gray-400"}>
                 {isFavorited ? "♥" : "♡"}
               </span>
               {isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
