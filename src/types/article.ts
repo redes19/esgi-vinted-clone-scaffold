@@ -43,3 +43,13 @@ export const CONDITIONS: Condition[] = [
   { value: "bon_etat", label: "Bon état" },
   { value: "satisfaisant", label: "Satisfaisant" },
 ];
+
+export interface EditArticleProps {
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  size: string;
+  condition: string;
+  imageUrl: string;
+}
