@@ -16,7 +16,6 @@ export const useEditArticleForm = (
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    reset,
   } = useForm<EditArticleProps>({
     defaultValues: {
       title: initialValues?.title ?? "",
@@ -30,7 +29,7 @@ export const useEditArticleForm = (
     values: initialValues,
   });
 
-  const { mutate, isError, isSuccess, isPending, error } = useMutation<
+  const { mutate, isError, isPending, error } = useMutation<
     Article,
     Error,
     EditArticleProps
@@ -53,12 +52,10 @@ export const useEditArticleForm = (
     register,
     handleSubmit,
     onSubmit,
-    reset,
     errors,
     isDirty,
     isPending,
     isError,
-    isSuccess,
     error,
   };
 };
